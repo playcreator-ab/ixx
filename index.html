@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freddoak | Roblox Builder & Modeler Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #09090b;
+        }
+        .heading-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #09090b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3f3f46;
+        }
+        /* Glow animations */
+        .glow-accent {
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.15);
+        }
+        
+        /* Gallery animation classes */
+        .gallery-item {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: scale(1);
+            opacity: 1;
+        }
+        .gallery-item.hidden-item {
+            transform: scale(0.8);
+            opacity: 0;
+            display: none !important;
+        }
+    </style>
+</head>
+<body class="text-zinc-100 overflow-x-hidden antialiased">
+
+    <!-- Ambient Glowing Backgrounds -->
+    <div class="fixed top-0 left-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+    <div class="fixed bottom-10 right-10 w-80 h-80 bg-orange-600/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 ease-out bg-zinc-900 border border-amber-500/30 text-zinc-100 px-5 py-3 rounded-xl flex items-center gap-3 shadow-2xl">
+        <div class="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-400">
+            <i class="fa-solid fa-check text-xs"></i>
+        </div>
+        <div>
+            <p class="text-sm font-semibold heading-font" id="toast-title">Success!</p>
+            <p class="text-xs text-zinc-400" id="toast-desc">Discord tag copied successfully.</p>
+        </div>
+    </div>
+
+    <!-- Sticky Navigation Header -->
+    <header class="sticky top-0 z-40 w-full border-b border-zinc-800/60 bg-zinc-950/80 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-zinc-950 font-black text-xl heading-font shadow-lg shadow-amber-500/20">
+                    F
+                </div>
+                <span class="font-bold text-lg heading-font tracking-wide bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">
+                    FREDDOAK
+                </span>
+            </div>
+            <nav class="hidden md:flex items-center gap-8 text-sm text-zinc-400">
+                <a href="#about" class="hover:text-amber-400 transition-colors">About</a>
+                <a href="#skills" class="hover:text-amber-400 transition-colors">Skills</a>
+                <a href="#portfolio" class="hover:text-amber-400 transition-colors">Showcase</a>
+                <a href="#pricing-calculator" class="hover:text-amber-400 transition-colors">Pricing Calculator</a>
+            </nav>
+            <div class="flex items-center gap-3">
+                <button onclick="copyDiscordTag()" class="relative group overflow-hidden px-4 py-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-amber-500/50 transition-all duration-300 text-xs font-semibold tracking-wide flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span>COMMISSIONS OPEN</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Hero / About Section -->
+    <section id="about" class="relative min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 z-10">
+        <div class="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <div class="lg:col-span-7 flex flex-col justify-center space-y-6">
+                <div class="inline-flex items-center gap-2 bg-amber-500/10 text-amber-400 px-3 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase border border-amber-500/20 self-start">
+                    <i class="fa-solid fa-gamepad"></i> 3+ Years Roblox Developer
+                </div>
+                
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold heading-font tracking-tight leading-[1.1] text-transparent bg-gradient-to-br from-white via-zinc-200 to-zinc-500 bg-clip-text">
+                    Bringing Virtual Worlds <br>
+                    <span class="text-transparent bg-gradient-to-r from-amber-400 via-orange-500 to-amber-600 bg-clip-text">To Life.</span>
+                </h1>
+                
+                <p class="text-zinc-400 text-base sm:text-lg max-w-xl leading-relaxed">
+                    Hello! I'm a professional <span class="text-zinc-200 font-semibold">Roblox Builder and Modeler</span> with 3+ years of experience creating beautifully clean, highly optimized, and visually stunning low-poly, medieval, and simulator-style environments.
+                </p>
+
+                <div class="grid grid-cols-3 gap-4 py-4 max-w-lg border-y border-zinc-800/60">
+                    <div>
+                        <p class="text-2xl sm:text-3xl font-bold heading-font text-amber-500">3+</p>
+                        <p class="text-xs text-zinc-500 uppercase tracking-wider">Years Experience</p>
+                    </div>
+                    <div>
+                        <p class="text-2xl sm:text-3xl font-bold heading-font text-white">100%</p>
+                        <p class="text-xs text-zinc-500 uppercase tracking-wider">Low Poly Assets</p>
+                    </div>
+                    <div>
+                        <p class="text-2xl sm:text-3xl font-bold heading-font text-white">Custom</p>
+                        <p class="text-xs text-zinc-500 uppercase tracking-wider">Commissions Available</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-4 pt-2">
+                    <button onclick="copyDiscordTag()" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-zinc-950 font-bold heading-font text-sm shadow-lg shadow-amber-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2">
+                        <i class="fa-brands fa-discord text-base"></i> Let's Order (Copy Discord)
+                    </button>
+                    <a href="#pricing-calculator" class="px-6 py-3.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-zinc-300 hover:text-white font-semibold text-sm transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-calculator"></i> Estimate Price
+                    </a>
+                </div>
+            </div>
+
+            <!-- Three.js Canvas Container -->
+            <div class="lg:col-span-5 flex flex-col items-center justify-center relative">
+                <div class="relative w-full aspect-square max-w-[450px] bg-zinc-900/30 border border-zinc-800/60 rounded-3xl glow-accent overflow-hidden backdrop-blur-sm group">
+                    <!-- Interactive HUD indicators -->
+                    <div class="absolute top-4 left-4 z-10 pointer-events-none">
+                        <div class="flex items-center gap-1.5 bg-zinc-950/80 border border-zinc-800 px-2.5 py-1 rounded-lg text-[10px] text-zinc-400 font-mono">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                            3D PREVIEW (DRAG TO ROTATE)
+                        </div>
+                    </div>
+
+                    <div class="absolute bottom-4 right-4 z-10 pointer-events-none">
+                        <div class="bg-zinc-950/80 border border-zinc-800 px-2.5 py-1 rounded-lg text-[10px] text-zinc-400 font-mono">
+                            <span>POLYGONS: LOW POLY</span>
+                        </div>
+                    </div>
+
+                    <!-- Canvas -->
+                    <div id="threejs-container" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 border-t border-zinc-900/80 bg-zinc-950/40 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs font-bold tracking-widest text-amber-500 uppercase heading-font mb-2">My Toolbox</h2>
+                <h3 class="text-3xl sm:text-4xl font-extrabold heading-font text-white">Specialized Map Construction</h3>
+                <p class="text-zinc-400 mt-4">Creating highly stylized maps that perfectly retain smooth performance on low-end mobile & console platforms.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Skill 1 -->
+                <div class="bg-zinc-900/30 border border-zinc-800/80 p-6 rounded-2xl hover:border-amber-500/40 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 mb-5 group-hover:bg-amber-500 group-hover:text-zinc-950 transition-all duration-300">
+                        <i class="fa-solid fa-tree text-xl"></i>
+                    </div>
+                    <h4 class="text-lg font-bold heading-font text-white mb-2">Environment Building</h4>
+                    <p class="text-zinc-400 text-sm leading-relaxed">Assembling grand atmosphere-focused Roblox environments with dynamic lighting, custom fog configurations, and realistic skyboxes.</p>
+                </div>
+
+                <!-- Skill 2 -->
+                <div class="bg-zinc-900/30 border border-zinc-800/80 p-6 rounded-2xl hover:border-amber-500/40 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 mb-5 group-hover:bg-amber-500 group-hover:text-zinc-950 transition-all duration-300">
+                        <i class="fa-solid fa-shapes text-xl"></i>
+                    </div>
+                    <h4 class="text-lg font-bold heading-font text-white mb-2">Low Poly Maps</h4>
+                    <p class="text-zinc-400 text-sm leading-relaxed">Smooth, vibrant assets containing optimized geometric configurations. Keeps memory loads light while delivering visual punch.</p>
+                </div>
+
+                <!-- Skill 3 -->
+                <div class="bg-zinc-900/30 border border-zinc-800/80 p-6 rounded-2xl hover:border-amber-500/40 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 mb-5 group-hover:bg-amber-500 group-hover:text-zinc-950 transition-all duration-300">
+                        <i class="fa-solid fa-fort-awesome text-xl"></i>
+                    </div>
+                    <h4 class="text-lg font-bold heading-font text-white mb-2">Medieval Builds</h4>
+                    <p class="text-zinc-400 text-sm leading-relaxed">Detailed castles, village pathways, defense ramparts, timbered houses, and medieval weapon props matching stylized aesthetics.</p>
+                </div>
+
+                <!-- Skill 4 -->
+                <div class="bg-zinc-900/30 border border-zinc-800/80 p-6 rounded-2xl hover:border-amber-500/40 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 mb-5 group-hover:bg-amber-500 group-hover:text-zinc-950 transition-all duration-300">
+                        <i class="fa-solid fa-coins text-xl"></i>
+                    </div>
+                    <h4 class="text-lg font-bold heading-font text-white mb-2">Simulator Maps</h4>
+                    <p class="text-zinc-400 text-sm leading-relaxed">Colorful, high-energy zone progression layouts perfectly aligned for quest-based mechanics and coin collection loops.</p>
+                </div>
+
+                <!-- Skill 5 -->
+                <div class="bg-zinc-900/30 border border-zinc-800/80 p-6 rounded-2xl hover:border-amber-500/40 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 mb-5 group-hover:bg-amber-500 group-hover:text-zinc-950 transition-all duration-300">
+                        <i class="fa-solid fa-cube text-xl"></i>
+                    </div>
+                    <h4 class="text-lg font-bold heading-font text-white mb-2">3D Modeling (Blender)</h4>
+                    <p class="text-zinc-400 text-sm leading-relaxed">Clean topology meshes, completely texture-mapped or stylized gradient-mapped to maintain minimal draw-calls in Roblox.</p>
+                </div>
+
+                <!-- Skill 6 -->
+                <div class="bg-zinc-900/30 border border-zinc-800/80 p-6 rounded-2xl hover:border-amber-500/40 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 mb-5 group-hover:bg-amber-500 group-hover:text-zinc-950 transition-all duration-300">
+                        <i class="fa-solid fa-gauge-high text-xl"></i>
+                    </div>
+                    <h4 class="text-lg font-bold heading-font text-white mb-2">Optimization Master</h4>
+                    <p class="text-zinc-400 text-sm leading-relaxed">Efficient asset reuse, perfect collision-box customization, smart render distance setups, and low polygon density.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Showcase / Portfolio Gallery Section -->
+    <section id="portfolio" class="py-20 border-t border-zinc-900 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                <div>
+                    <h2 class="text-xs font-bold tracking-widest text-amber-500 uppercase heading-font mb-2">Asset Showroom</h2>
+                    <h3 class="text-3xl sm:text-4xl font-extrabold heading-font text-white">Visual Style Disciplines</h3>
+                    <p class="text-zinc-400 mt-2">All assets are meticulously modeled, grouped, and tailored for fast loading speeds.</p>
+                </div>
+                
+                <!-- Category Filter Buttons -->
+                <div class="flex flex-wrap gap-2 bg-zinc-950 border border-zinc-800 p-1.5 rounded-xl self-start">
+                    <button onclick="filterGallery('all')" id="btn-all" class="category-btn px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider heading-font transition-all bg-amber-500 text-zinc-950 shadow-sm">
+                        All Works
+                    </button>
+                    <button onclick="filterGallery('low-poly')" id="btn-low-poly" class="category-btn px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider heading-font transition-all text-zinc-400 hover:text-white">
+                        Low Poly
+                    </button>
+                    <button onclick="filterGallery('medieval')" id="btn-medieval" class="category-btn px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider heading-font transition-all text-zinc-400 hover:text-white">
+                        Medieval
+                    </button>
+                    <button onclick="filterGallery('studs')" id="btn-studs" class="category-btn px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider heading-font transition-all text-zinc-400 hover:text-white">
+                        Studs & Realism
+                    </button>
+                </div>
+            </div>
+
+            <!-- Portfolio Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="gallery-grid">
+                
+                <!-- Card 1 -->
+                <div class="gallery-item show low-poly medieval bg-zinc-900/20 border border-zinc-800/80 rounded-2xl overflow-hidden group hover:border-zinc-700 transition-all duration-300">
+                    <div class="relative aspect-[4/3] bg-zinc-950 flex items-center justify-center overflow-hidden">
+                        <img class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" 
+                             src="https://raw.githubusercontent.com/playcreator-ab/ixx/refs/heads/main/Capture_decran_2026-05-14_211215.png" 
+                             alt="Medieval Kingdom Spawn Preview"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x450/27272a/a1a1aa?text=Image+Unavailable';">
+                        <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent opacity-60"></div>
+                        <span class="absolute top-4 right-4 bg-zinc-900/90 border border-zinc-800 text-xs px-2.5 py-1 rounded-lg text-amber-500 font-bold heading-font">LOW POLY / MEDIEVAL</span>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="gallery-item show low-poly bg-zinc-900/20 border border-zinc-800/80 rounded-2xl overflow-hidden group hover:border-zinc-700 transition-all duration-300">
+                    <div class="relative aspect-[4/3] bg-zinc-950 flex items-center justify-center overflow-hidden">
+                        <img class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" 
+                             src="https://raw.githubusercontent.com/playcreator-ab/ixx/refs/heads/main/Capture_decran_2026-05-16_152812.png" 
+                             alt="Chroma Candy Simulator Preview"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x450/27272a/a1a1aa?text=Image+Unavailable';">
+                        <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent opacity-60"></div>
+                        <span class="absolute top-4 right-4 bg-zinc-900/90 border border-zinc-800 text-xs px-2.5 py-1 rounded-lg text-amber-500 font-bold heading-font">SIMULATOR</span>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="gallery-item show medieval bg-zinc-900/20 border border-zinc-800/80 rounded-2xl overflow-hidden group hover:border-zinc-700 transition-all duration-300">
+                    <div class="relative aspect-[4/3] bg-zinc-950 flex items-center justify-center overflow-hidden">
+                        <img class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" 
+                             src="https://raw.githubusercontent.com/playcreator-ab/ixx/refs/heads/main/Capture_decran_2026-05-17_151652.png" 
+                             alt="Blacksmith Workshop Preview"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x450/27272a/a1a1aa?text=Image+Unavailable';">
+                        <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent opacity-60"></div>
+                        <span class="absolute top-4 right-4 bg-zinc-900/90 border border-zinc-800 text-xs px-2.5 py-1 rounded-lg text-amber-500 font-bold heading-font">PROP / INTERIOR</span>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="gallery-item show studs bg-zinc-900/20 border border-zinc-800/80 rounded-2xl overflow-hidden group hover:border-zinc-700 transition-all duration-300">
+                    <div class="relative aspect-[4/3] bg-zinc-950 flex items-center justify-center overflow-hidden">
+                        <img class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" 
+                             src="https://raw.githubusercontent.com/playcreator-ab/ixx/refs/heads/main/Capture_decran_2026-05-18_190225.png" 
+                             alt="Realistic Downtown Street Preview"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x450/27272a/a1a1aa?text=Image+Unavailable';">
+                        <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent opacity-60"></div>
+                        <span class="absolute top-4 right-4 bg-zinc-900/90 border border-zinc-800 text-xs px-2.5 py-1 rounded-lg text-amber-500 font-bold heading-font">STUDS & REALISM</span>
+                    </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="gallery-item show low-poly bg-zinc-900/20 border border-zinc-800/80 rounded-2xl overflow-hidden group hover:border-zinc-700 transition-all duration-300">
+                    <div class="relative aspect-[4/3] bg-zinc-950 flex items-center justify-center overflow-hidden">
+                        <img class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" 
+                             src="https://raw.githubusercontent.com/playcreator-ab/ixx/refs/heads/main/Capture_decran_2026-05-23_202509.png" 
+                             alt="Pet Island Hub Preview"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x450/27272a/a1a1aa?text=Image+Unavailable';">
+                        <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent opacity-60"></div>
+                        <span class="absolute top-4 right-4 bg-zinc-900/90 border border-zinc-800 text-xs px-2.5 py-1 rounded-lg text-amber-500 font-bold heading-font">LOW POLY</span>
+                    </div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="gallery-item show medieval bg-zinc-900/20 border border-zinc-800/80 rounded-2xl overflow-hidden group hover:border-zinc-700 transition-all duration-300">
+                    <div class="relative aspect-[4/3] bg-zinc-950 flex items-center justify-center overflow-hidden">
+                        <img class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" 
+                             src="https://raw.githubusercontent.com/playcreator-ab/ixx/refs/heads/main/Capture_decran_2026-05-24_121633.png" 
+                             alt="Medieval Village Path Preview"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x450/27272a/a1a1aa?text=Image+Unavailable';">
+                        <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent opacity-60"></div>
+                        <span class="absolute top-4 right-4 bg-zinc-900/90 border border-zinc-800 text-xs px-2.5 py-1 rounded-lg text-amber-500 font-bold heading-font">MEDIEVAL</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Calculator Section -->
+    <section id="pricing-calculator" class="py-20 border-t border-zinc-900 bg-zinc-950/40 relative z-10">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-xs font-bold tracking-widest text-amber-500 uppercase heading-font mb-2">Estimate Your Project</h2>
+                <h3 class="text-3xl font-extrabold heading-font text-white">Interactive Commission Calculator</h3>
+                <p class="text-zinc-400 mt-2">Adjust values below to estimate your asset or map development cost.</p>
+            </div>
+
+            <div class="bg-zinc-900/30 border border-zinc-800/80 p-6 sm:p-8 rounded-3xl backdrop-blur-sm glow-accent">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-6">
+                        <!-- Project Type Slider -->
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2 font-mono">Project Scale</label>
+                            <select id="calc-scale" onchange="calculatePrice()" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-amber-500/50">
+                                <option value="small">Single Asset / Prop Group (Small)</option>
+                                <option value="medium" selected>Zone / Modular Kit (Medium)</option>
+                                <option value="large">Full Map Construction (Large)</option>
+                            </select>
+                        </div>
+
+                        <!-- Complex Asset Toggle -->
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2 font-mono">Complexity & Style</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="setComplexity('standard')" id="btn-comp-std" class="px-4 py-2.5 rounded-xl border text-xs font-bold uppercase bg-amber-500 border-amber-500 text-zinc-950 transition-all">
+                                    Low Poly
+                                </button>
+                                <button onclick="setComplexity('high')" id="btn-comp-high" class="px-4 py-2.5 rounded-xl border border-zinc-800 text-zinc-400 hover:text-white text-xs font-bold uppercase transition-all">
+                                    Highly Detailed
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Estimate Completion Time -->
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2 font-mono">Priority Tier</label>
+                            <select id="calc-priority" onchange="calculatePrice()" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-amber-500/50">
+                                <option value="flexible">Standard Delivery (1-2 Weeks)</option>
+                                <option value="rush">Express Delivery (Rush Order)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Calculated Output Display -->
+                    <div class="bg-zinc-950 border border-zinc-800/80 rounded-2xl p-6 flex flex-col justify-between">
+                        <div>
+                            <span class="text-[10px] font-mono tracking-widest text-zinc-500 uppercase">Estimated Total</span>
+                            <div class="mt-2 flex items-baseline gap-2">
+                                <span class="text-4xl sm:text-5xl font-black heading-font text-white" id="price-robux">R$ 15,000</span>
+                                <span class="text-xs text-zinc-500 font-mono">or</span>
+                                <span class="text-lg font-bold text-amber-500" id="price-usd">$52.50</span>
+                            </div>
+                            <p class="text-xs text-zinc-400 mt-4 leading-relaxed">
+                                Prices are illustrative baseline rates. Final quotes will adjust based on total triangle thresholds, modularity specifications, and asset optimization requirements.
+                            </p>
+                        </div>
+
+                        <button onclick="copyDiscordTag()" class="w-full mt-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-zinc-950 font-bold heading-font text-xs uppercase tracking-wider shadow-lg shadow-amber-500/15 transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-discord text-sm"></i> Order on Discord
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-zinc-900 bg-zinc-950 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-amber-500 flex items-center justify-center text-zinc-950 font-black text-lg heading-font">
+                    F
+                </div>
+                <span class="font-bold text-sm tracking-wide heading-font text-zinc-300">FREDDOAK</span>
+            </div>
+            <p class="text-xs text-zinc-500">&copy; 2026 Freddoak. All portfolio rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts and Logic -->
+    <script>
+        // Copy Discord Tag Logic
+        function copyDiscordTag() {
+            const discordTag = "Freddoak#0000"; // Replace with actual Discord username or tag
+            
+            // Clipboard fallback as instructed
+            const el = document.createElement('textarea');
+            el.value = discordTag;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+
+            showToast("Tag Copied!", "Discord handle successfully copied to clipboard.");
+        }
+
+        // Custom Toast Notification handler
+        function showToast(title, description) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-title').innerText = title;
+            document.getElementById('toast-desc').innerText = description;
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Portfolio Showroom Category Filter System
+        function filterGallery(category) {
+            const items = document.querySelectorAll('.gallery-item');
+            const buttons = document.querySelectorAll('.category-btn');
+
+            // Reset active style on all buttons
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-amber-500', 'text-zinc-950', 'shadow-sm');
+                btn.classList.add('text-zinc-400', 'hover:text-white');
+            });
+
+            // Set active state on clicked button
+            const activeBtn = document.getElementById(`btn-${category}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-zinc-400', 'hover:text-white');
+                activeBtn.classList.add('bg-amber-500', 'text-zinc-950', 'shadow-sm');
+            }
+
+            // Show/Hide Grid elements gracefully
+            items.forEach(item => {
+                if (category === 'all' || item.classList.contains(category)) {
+                    item.classList.remove('hidden-item');
+                } else {
+                    item.classList.add('hidden-item');
+                }
+            });
+        }
+
+        // Calculator Pricing Configuration State
+        let selectedComplexity = 'standard';
+
+        function setComplexity(tier) {
+            selectedComplexity = tier;
+            const btnStd = document.getElementById('btn-comp-std');
+            const btnHigh = document.getElementById('btn-comp-high');
+
+            if (tier === 'standard') {
+                btnStd.className = "px-4 py-2.5 rounded-xl border text-xs font-bold uppercase bg-amber-500 border-amber-500 text-zinc-950 transition-all";
+                btnHigh.className = "px-4 py-2.5 rounded-xl border border-zinc-800 text-zinc-400 hover:text-white text-xs font-bold uppercase transition-all";
+            } else {
+                btnHigh.className = "px-4 py-2.5 rounded-xl border text-xs font-bold uppercase bg-amber-500 border-amber-500 text-zinc-950 transition-all";
+                btnStd.className = "px-4 py-2.5 rounded-xl border border-zinc-800 text-zinc-400 hover:text-white text-xs font-bold uppercase transition-all";
+            }
+            calculatePrice();
+        }
+
+        function calculatePrice() {
+            const scale = document.getElementById('calc-scale').value;
+            const priority = document.getElementById('calc-priority').value;
+
+            let baseRobux = 15000;
+
+            if (scale === 'small') {
+                baseRobux = 5000;
+            } else if (scale === 'medium') {
+                baseRobux = 15000;
+            } else if (scale === 'large') {
+                baseRobux = 45000;
+            }
+
+            if (selectedComplexity === 'high') {
+                baseRobux *= 1.5;
+            }
+
+            if (priority === 'rush') {
+                baseRobux *= 1.3;
+            }
+
+            // Estimate USD value based on a standard DevEx exchange rate reference
+            const usdConversionRate = 0.0035; 
+            const usdValue = baseRobux * usdConversionRate;
+
+            document.getElementById('price-robux').innerText = `R$ ${Math.round(baseRobux).toLocaleString()}`;
+            document.getElementById('price-usd').innerText = `$${usdValue.toFixed(2)}`;
+        }
+
+        // Initialization of Three.js interactive preview
+        window.onload = function() {
+            initThreeJS();
+            calculatePrice(); // run initial pricing setup
+        }
+
+        function initThreeJS() {
+            const container = document.getElementById('threejs-container');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+
+            // Scene and Camera setup
+            const scene = new THREE.Scene();
+            scene.background = null; // transparent background
+
+            const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+            camera.position.set(4, 4, 6);
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            container.appendChild(renderer.domElement);
+
+            // Lighting Setup
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.45);
+            scene.add(ambientLight);
+
+            // Strong Directional Sunlight
+            const dirLight = new THREE.DirectionalLight(0xffe0b2, 1.2); // Warm daylight
+            dirLight.position.set(5, 10, 4);
+            dirLight.castShadow = true;
+            dirLight.shadow.mapSize.width = 1024;
+            dirLight.shadow.mapSize.height = 1024;
+            scene.add(dirLight);
+
+            // Soft Rim Light
+            const rimLight = new THREE.DirectionalLight(0x80deea, 0.5); // Cool cybernetic blue
+            rimLight.position.set(-5, 4, -5);
+            scene.add(rimLight);
+
+            // Create professional low poly floating WATCHTOWER island diorama
+            const group = new THREE.Group();
+            scene.add(group);
+
+            // Floating hexagonal grassy island base
+            const islandGeo = new THREE.CylinderGeometry(1.8, 2.0, 0.4, 6);
+            const islandMat = new THREE.MeshLambertMaterial({ color: 0x4caf50, flatShading: true }); // Bright stylized grass green
+            const island = new THREE.Mesh(islandGeo, islandMat);
+            island.position.y = -0.2;
+            island.receiveShadow = true;
+            group.add(island);
+
+            // Ground soil underside (Roots effect / rock base)
+            const dirtGeo = new THREE.ConeGeometry(1.85, 1.6, 6);
+            const dirtMat = new THREE.MeshLambertMaterial({ color: 0x3e2723, flatShading: true }); // Soil dark brown
+            const dirt = new THREE.Mesh(dirtGeo, dirtMat);
+            dirt.rotation.x = Math.PI;
+            dirt.position.y = -0.98;
+            group.add(dirt);
+
+            // Stylized Modular Stone Watchtower Base (Cylinder / Hexagon blocks)
+            const towerBaseGeo = new THREE.CylinderGeometry(0.45, 0.55, 1.3, 6);
+            const towerBaseMat = new THREE.MeshLambertMaterial({ color: 0x78909c, flatShading: true }); // Stone grey
+            const towerBase = new THREE.Mesh(towerBaseGeo, towerBaseMat);
+            towerBase.position.set(0, 0.65, 0);
+            towerBase.castShadow = true;
+            towerBase.receiveShadow = true;
+            group.add(towerBase);
+
+            // Wooden Pillars on Tower Balcony
+            const woodMat = new THREE.MeshLambertMaterial({ color: 0x8d6e63, flatShading: true });
+            const pillarGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.5, 4);
+            const pillars = [
+                {x: 0.3, z: 0.3},
+                {x: -0.3, z: 0.3},
+                {x: 0.3, z: -0.3},
+                {x: -0.3, z: -0.3}
+            ];
+            pillars.forEach(p => {
+                const pillar = new THREE.Mesh(pillarGeo, woodMat);
+                pillar.position.set(p.x, 1.45, p.z);
+                pillar.castShadow = true;
+                group.add(pillar);
+            });
+
+            // Conical Watchtower Stylized Roof
+            const roofGeo = new THREE.ConeGeometry(0.65, 0.55, 6);
+            const roofMat = new THREE.MeshLambertMaterial({ color: 0xd32f2f, flatShading: true }); // Vibrant medieval red
+            const roof = new THREE.Mesh(roofGeo, roofMat);
+            roof.position.y = 1.9;
+            roof.castShadow = true;
+            group.add(roof);
+
+            // Watchtower flag spire
+            const poleGeo = new THREE.CylinderGeometry(0.02, 0.02, 0.5, 4);
+            const pole = new THREE.Mesh(poleGeo, woodMat);
+            pole.position.y = 2.25;
+            group.add(pole);
+
+            // Tiny yellow flag
+            const flagGeo = new THREE.BoxGeometry(0.25, 0.12, 0.01);
+            const flagMat = new THREE.MeshLambertMaterial({ color: 0xffeb3b, flatShading: true });
+            const flag = new THREE.Mesh(flagGeo, flagMat);
+            flag.position.set(0.125, 2.4, 0);
+            group.add(flag);
+
+            // Add stone steps climbing up the tower
+            const stairGeo = new THREE.BoxGeometry(0.2, 0.1, 0.35);
+            const stairMat = new THREE.MeshLambertMaterial({ color: 0x546e7a, flatShading: true });
+            for (let i = 0; i < 4; i++) {
+                const stair = new THREE.Mesh(stairGeo, stairMat);
+                const angle = i * 0.45;
+                stair.position.set(Math.cos(angle) * 0.65, i * 0.18 + 0.1, Math.sin(angle) * 0.65);
+                stair.rotation.y = -angle;
+                stair.castShadow = true;
+                stair.receiveShadow = true;
+                group.add(stair);
+            }
+
+            // Stylized Low Poly Pine Tree
+            const treeGroup = new THREE.Group();
+            treeGroup.position.set(-0.9, 0, 0.7);
+
+            const trunkGeo = new THREE.CylinderGeometry(0.06, 0.1, 0.4, 5);
+            const trunk = new THREE.Mesh(trunkGeo, woodMat);
+            trunk.position.y = 0.2;
+            trunk.castShadow = true;
+            treeGroup.add(trunk);
+
+            const leavesColor = 0x2e7d32;
+            const leavesMat = new THREE.MeshLambertMaterial({ color: leavesColor, flatShading: true });
+            const leaves1 = new THREE.Mesh(new THREE.ConeGeometry(0.35, 0.5, 5), leavesMat);
+            leaves1.position.y = 0.5;
+            leaves1.castShadow = true;
+            treeGroup.add(leaves1);
+
+            const leaves2 = new THREE.Mesh(new THREE.ConeGeometry(0.25, 0.4, 5), leavesMat);
+            leaves2.position.y = 0.8;
+            leaves2.castShadow = true;
+            treeGroup.add(leaves2);
+
+            group.add(treeGroup);
+
+            // Little Rocks on grass
+            const rockGeo = new THREE.DodecahedronGeometry(0.15, 0);
+            const rockMat = new THREE.MeshLambertMaterial({ color: 0x90a4ae, flatShading: true });
+            const rock = new THREE.Mesh(rockGeo, rockMat);
+            rock.position.set(0.9, 0.05, -0.6);
+            rock.scale.set(1.4, 1.1, 1);
+            rock.rotation.set(Math.random(), Math.random(), Math.random());
+            rock.castShadow = true;
+            group.add(rock);
+
+            // Small glowing lantern hanging inside the watchtower balcony
+            const lanternGeo = new THREE.SphereGeometry(0.07, 4, 4);
+            const lanternMat = new THREE.MeshBasicMaterial({ color: 0xffe082 }); // Glowing yellow/orange
+            const lantern = new THREE.Mesh(lanternGeo, lanternMat);
+            lantern.position.set(0, 1.45, 0);
+            group.add(lantern);
+
+            const lanternLight = new THREE.PointLight(0xffa726, 1.2, 2.5);
+            lanternLight.position.set(0, 1.45, 0);
+            group.add(lanternLight);
+
+            // Tiny puffy clouds floating around the watchtower
+            const cloudGroup = new THREE.Group();
+            cloudGroup.position.set(1.1, 1.5, 0.9);
+            
+            const cloudMat = new THREE.MeshLambertMaterial({ color: 0xffffff, flatShading: true });
+            const cGeo = new THREE.DodecahedronGeometry(0.2, 0);
+            
+            const cloudPart1 = new THREE.Mesh(cGeo, cloudMat);
+            cloudPart1.position.set(-0.1, 0, 0);
+            cloudGroup.add(cloudPart1);
+
+            const cloudPart2 = new THREE.Mesh(cGeo, cloudMat);
+            cloudPart2.position.set(0.08, 0.04, 0);
+            cloudPart2.scale.set(1.25, 1.25, 1.25);
+            cloudGroup.add(cloudPart2);
+
+            group.add(cloudGroup);
+
+            // Drag / Rotation Control Interface
+            let isDragging = false;
+            let previousMousePosition = { x: 0, y: 0 };
+
+            const handleStart = (clientX, clientY) => {
+                isDragging = true;
+                previousMousePosition = { x: clientX, y: clientY };
+            };
+
+            const handleMove = (clientX, clientY) => {
+                if (!isDragging) return;
+
+                const deltaMove = {
+                    x: clientX - previousMousePosition.x,
+                    y: clientY - previousMousePosition.y
+                };
+
+                group.rotation.y += deltaMove.x * 0.008;
+                group.rotation.x += deltaMove.y * 0.008;
+
+                // Lock horizontal rotation so it doesn't flip completely upside down
+                group.rotation.x = Math.max(-0.4, Math.min(0.4, group.rotation.x));
+
+                previousMousePosition = { x: clientX, y: clientY };
+            };
+
+            const handleEnd = () => {
+                isDragging = false;
+            };
+
+            // Desktop Mouse Listeners
+            container.addEventListener('mousedown', (e) => handleStart(e.clientX, e.clientY));
+            window.addEventListener('mousemove', (e) => handleMove(e.clientX, e.clientY));
+            window.addEventListener('mouseup', handleEnd);
+
+            // Mobile Touch Listeners
+            container.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) {
+                    handleStart(e.touches[0].clientX, e.touches[0].clientY);
+                }
+            }, { passive: true });
+            
+            window.addEventListener('touchmove', (e) => {
+                if (e.touches.length === 1) {
+                    handleMove(e.touches[0].clientX, e.touches[0].clientY);
+                }
+            }, { passive: true });
+            
+            window.addEventListener('touchend', handleEnd);
+
+            // Handle Dynamic Resizing
+            window.addEventListener('resize', onWindowResize, false);
+
+            function onWindowResize() {
+                const newWidth = container.clientWidth;
+                const newHeight = container.clientHeight;
+                camera.aspect = newWidth / newHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(newWidth, newHeight);
+            }
+
+            // Rendering Loop
+            function animate() {
+                requestAnimationFrame(animate);
+
+                // Idle hover rotations
+                if (!isDragging) {
+                    group.rotation.y += 0.0025;
+                    group.position.y = Math.sin(Date.now() * 0.001) * 0.06;
+                    
+                    // Soft cloud movement
+                    cloudGroup.position.x = 1.1 + Math.sin(Date.now() * 0.0008) * 0.15;
+                    cloudGroup.position.z = 0.9 + Math.cos(Date.now() * 0.0008) * 0.15;
+                }
+
+                renderer.render(scene, camera);
+            }
+
+            animate();
+        }
+    </script>
+</body>
+</html>
